@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Organizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+          
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 50px auto;
+            padding: 20px;
+          border: black solid 1.5px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            background-color: #ccc;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            background-color:white;
+            padding: 3px;
+            border-radius: 4px;
+            font-weight: 900;
+        }
+
+        a:hover {
+            color: #c82333;
+            background-color: #007bff;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Additional styles for the theme changer */
+        #themeInput {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL Organizer</h1>
+<div class="container">
+
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <input type="text" id="urlNameInput" placeholder="Enter URL Name">
+    <button onclick="addURL()">Add URL</button>
+    <ul id="urlList">....</ul>
+    
+    <input type="color" id="themeInput" onchange="changeTheme()">
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadURLs();
+        loadTheme();
+    });
+
+    function loadURLs() {
+        const urls = JSON.parse(localStorage.getItem('urls')) || [];
+        const urlList = document.getElementById('urlList');
+        urlList.innerHTML = '';
+        urls.forEach(url => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = url.url;
+            a.target = '_blank';
+            a.textContent = url.name;
+            li.appendChild(a);
+            urlList.appendChild(li);
+            addDeleteButton(li);
+        });
+    }
+
+    function addURL() {
+        const urlNameInput = document.getElementById('urlNameInput');
+        const urlInput = document.getElementById('urlInput');
+        const urlName = urlNameInput.value.trim();
+        const url = urlInput.value.trim();
+        if (urlName !== '' && url !== '') {
+            const urls = JSON.parse(localStorage.getItem('urls')) || [];
+            urls.push({name: urlName, url: url});
+            localStorage.setItem('urls', JSON.stringify(urls));
+            loadURLs();
+            urlNameInput.value = '';
+            urlInput.value = '';
+        }
+    }
+
+
+    function addDeleteButton(li) {
+        const button = document.createElement('button');
+        button.textContent = 'Delete';
+        button.className = 'delete-button'; // Add class for styling
+        button.addEventListener('click', () => {
+            const url = li.querySelector('a').getAttribute('href'); // Retrieve URL from anchor element
+            const urls = JSON.parse(localStorage.getItem('urls')) || [];
+            const index = urls.findIndex(u => u.url === url); // Find index of URL
+            if (index !== -1) {
+                urls.splice(index, 1); // Remove URL from array
+                localStorage.setItem('urls', JSON.stringify(urls)); // Update local storage
+                loadURLs(); // Reload URL list
+            }
+        });
+        li.appendChild(button);
+    }
+
+    // Function to change the theme
+    function changeTheme() {
+        const themeColor = document.getElementById('themeInput').value;
+        document.body.style.backgroundColor = themeColor;
+        localStorage.setItem('themeColor', themeColor);
+    }
+
+    // Function to load the theme from local storage
+    function loadTheme() {
+        const themeColor = localStorage.getItem('themeColor');
+        if (themeColor) {
+            document.body.style.backgroundColor = themeColor;
+        }
+    }
+</script>
+</body>
+</html>
