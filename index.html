@@ -106,6 +106,35 @@
     cursor: pointer;
 }
 
+
+#themeInput {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 60px;
+        height: 60px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+       
+        }
+        #themeInput::-webkit-color-swatch{
+            border-radius: 50%;
+            border-left: 5px solid black;
+            border-right: 5px solid yellow;
+            border-top: 5px solid red;
+            border-bottom: 5px solid blue;
+            
+        }
+
+        #themeInput::moz-color-swatch{
+            border-radius: 55%;
+            border: 5px solid black;
+            border-right: 5px solid yellow;
+            border-top: 5px solid red;
+            border-bottom: 5px solid blue;
+        }
+
     </style>
 </head>
 <body>
@@ -119,9 +148,16 @@
     <input type="text" id="urlNameInput" placeholder="Enter URL Name">
     <button onclick="addURL()">Add URL</button>
     <ul id="urlList">....</ul>
-    
-    <input type="color" id="themeInput" onchange="changeTheme()">
 </div>
+
+<center>
+    <p style="text-shadow: 2px 2px 2px gray;font-weight: 900;">
+    <input type="color" id="themeInput" onchange="changeTheme()">
+    <br>
+    change the theme
+    </p>
+</center>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         loadURLs();
@@ -189,6 +225,7 @@
         const themeColor = localStorage.getItem('themeColor');
         if (themeColor) {
             document.body.style.backgroundColor = themeColor;
+        
         }
     }
 
