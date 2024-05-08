@@ -95,6 +95,19 @@
         #themeInput {
             margin-bottom: 10px;
         }
+
+        .copy-button {
+    padding: 5px 10px; /* Add padding */
+    margin-left: 10px; /* Add margin */
+    background-color: #000; /* Green color */
+    color:gray ;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -106,7 +119,6 @@
 
     <input type="text" id="urlInput" placeholder="Enter URL">
     <input type="text" id="urlNameInput" placeholder="Enter URL Name">
-    <br>
     <button onclick="addURL()">Add URL</button>
     <ul id="urlList">....</ul>
     
@@ -181,6 +193,37 @@
             document.body.style.backgroundColor = themeColor;
         }
     }
+
+    function loadURLs() {
+    const urls = JSON.parse(localStorage.getItem('urls')) || [];
+    const urlList = document.getElementById('urlList');
+    urlList.innerHTML = '';
+    urls.forEach(urlObj => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = urlObj.url;
+        a.target = '_blank';
+        a.textContent = urlObj.name;
+        li.appendChild(a);
+
+        // Create copy button
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy';
+        copyButton.className = 'copy-button';
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(urlObj.url).then(() => {
+                alert('URL copied to clipboard!');
+            }, () => {
+                alert('Failed to copy URL!');
+            });
+        });
+        li.appendChild(copyButton);
+
+        urlList.appendChild(li);
+        addDeleteButton(li);
+    });
+}
+
 </script>
 </body>
 </html>
