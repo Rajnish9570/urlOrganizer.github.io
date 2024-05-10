@@ -163,8 +163,6 @@
             <br>
             Change the theme
         </p>
-        <p id="addedCount">Added: 0</p>
-        <p id="deletedCount">Deleted: 0</p>
     </center>
 
 <script>
@@ -269,23 +267,6 @@
 }
 
 
-
-
-         function addURL() {
-            // Existing code for adding URL
-            // Update added count
-            const addedCount = document.getElementById('addedCount');
-            const currentCount = parseInt(addedCount.textContent.split(': ')[1]) || 0;
-            addedCount.textContent = `Added: ${currentCount + 1}`;
-        }
-
-        function addDeleteButton(li) {
-            // Existing code for adding delete button
-            // Update deleted count
-            const deletedCount = document.getElementById('deletedCount');
-            const currentCount = parseInt(deletedCount.textContent.split(': ')[1]) || 0;
-            deletedCount.textContent = `Deleted: ${currentCount + 1}`;
-        }
 </script>
 </body>
 </html>
